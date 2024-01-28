@@ -1,0 +1,27 @@
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        char[] chars = s.toCharArray();
+        // record the index of last occurrence for each character
+        int[] lastIndex = new int[26];
+        for (int i = 0; i < chars.length; i++) {
+            lastIndex[chars[i] - 'a'] = i;
+        }
+
+        boolean[] used = new boolean[26];
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < chars.length; i++) {
+            // if the current character has been used, skip it
+            if (used[chars[i] - 'a']) {
+                continue;
+            }
+            
+            while (ans.length() > 0 && ans.charAt(ans.length() - 1) > chars[i] && lastIndex[ans.charAt(ans.length() - 1) - 'a'] > i) {
+                used[ans.charAt(ans.length() - 1) - 'a'] = false;
+                ans.deleteCharAt(ans.length() - 1);
+            }
+            ans.append(chars[i]);
+            used[chars[i] - 'a'] = true;
+        }
+        return ans.toString();
+    }
+}
